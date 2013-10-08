@@ -12,7 +12,7 @@ var NicoAPIUrls = map[string]string{
 	"getflv":       "http://flapi.nicovideo.jp/api/getflv/",
 }
 
-func GetVideoInfo(movieId string) {
+func GetVideoInfo(movieId string) string {
 	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + movieId)
 	if err != nil {
 		fmt.Println(err)
@@ -25,6 +25,5 @@ func GetVideoInfo(movieId string) {
 		os.Exit(1)
 	}
 
-	fmt.Println("status:", resp.Status)
-	fmt.Println(string(body))
+	return string(body)
 }

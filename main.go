@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"runtime"
 
 	"gonico"
@@ -17,5 +18,6 @@ func main() {
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	gonico.GetVideoInfo(*movieUrl)
+	movieInfo := gonico.GetVideoInfo(*movieUrl)
+	fmt.Println(movieInfo)
 }
