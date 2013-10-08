@@ -8,29 +8,14 @@ import (
 )
 
 const (
-	startHelp    = "Set start page"
-	endHelp      = "Set end page"
-	outHelp      = "Set download path"
-	intervalHelp = "Polling interval time (min)"
+	urlHelp = "The movie url or id from which you want to extract movie infomation."
 )
-
-var (
-	start    = flag.Int("start", 1, startHelp)
-	end      = flag.Int("end", 1, endHelp)
-	out      = flag.String("out", "", outHelp)
-	interval = flag.Int("interval", 30, intervalHelp)
-)
-
-func init() {
-	flag.IntVar(start, "s", 1, startHelp)
-	flag.IntVar(end, "e", 1, endHelp)
-	flag.StringVar(out, "o", "", outHelp)
-	flag.IntVar(interval, "i", 30, intervalHelp)
-}
 
 func main() {
+	movieUrl := flag.String("url", "foo", urlHelp)
 	flag.Parse()
+
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	gonico.GetVideoInfo("sm9")
+	gonico.GetVideoInfo(*movieUrl)
 }
