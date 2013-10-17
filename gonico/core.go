@@ -80,5 +80,6 @@ func GetVideoThumbResponse(videoId string) (NicoVideoThumbResponse, string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
 	return result, result.Status
 }
