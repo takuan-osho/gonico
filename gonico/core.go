@@ -61,7 +61,7 @@ type NicoVideoThumbResponse struct {
 	VideoInfo NicoVideoInfo      `xml:"thumb"`
 }
 
-func GetVideoInfo(videoId string) NicoVideoThumbResponse {
+func GetVideoThumbResponse(videoId string) (NicoVideoThumbResponse, string) {
 	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
 	if err != nil {
 		fmt.Println(err)
@@ -80,5 +80,5 @@ func GetVideoInfo(videoId string) NicoVideoThumbResponse {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	return result
+	return result, result.Status
 }

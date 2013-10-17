@@ -18,6 +18,11 @@ func main() {
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	videoInfo := gonico.GetVideoInfo(*videoUrl)
-	fmt.Println(videoInfo)
+	resp, status := gonico.GetVideoThumbResponse(*videoUrl)
+	if status != "ok" {
+		fmt.Println(resp.ErrorInfo)
+	} else {
+		videoInfo := resp.VideoInfo
+		fmt.Println(videoInfo)
+	}
 }
