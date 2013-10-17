@@ -1,6 +1,7 @@
 package gonico
 
 import (
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,8 +13,56 @@ var NicoAPIUrls = map[string]string{
 	"getflv":       "http://flapi.nicovideo.jp/api/getflv/",
 }
 
-func GetVideoInfo(movieId string) string {
-	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + movieId)
+type NicoVideoErrorInfo struct {
+	XMLName     xml.Name `xml:"error"`
+	Code        string   `xml:"code"`
+	Description string   `xml:"description"`
+}
+
+type NicoVideoTag struct {
+	XMLName xml.Name `xml:"tag"`
+	Lock    string   `xml:"lock,attr"`
+	Value   string   `xml:",innerxml"`
+}
+
+type NicoVideoTags struct {
+	XMLName xml.Name       `xml:"tags"`
+	Domain  string         `xml:"domain,attr"`
+	Tag     []NicoVideoTag `xml:"tag"`
+}
+
+type NicoVideoInfo struct {
+	XMLName       xml.Name        `xml:"thumb"`
+	VideoId       string          `xml:"video_id"`
+	Title         string          `xml:"title"`
+	Description   string          `xml:"description"`
+	ThumbnailUrl  string          `xml:"thumbnail_url"`
+	FirstRetrieve string          `xml:"first_retrieve"`
+	Length        string          `xml:"length"`
+	MovieType     string          `xml:"movie_type"`
+	SizeHigh      int             `xml:"size_high"`
+	SizeLow       int             `xml:"size_low"`
+	ViewCounter   int             `xml:"view_counter"`
+	CommentNum    int             `xml:"comment_num"`
+	MylistCounter int             `xml:"mylist_counter"`
+	LastResBody   string          `xml:"last_res_body"`
+	WatchUrl      string          `xml:"watch_url"`
+	ThumbType     string          `xml:"thumb_type"`
+	Embeddable    int             `xml:"embeddable"`
+	NoLivePlay    int             `xml:"no_live_play"`
+	Tags          []NicoVideoTags `xml:"tags"`
+	UserId        int             `xml:"user_id"`
+}
+
+type NicoVideoThumbResponse struct {
+	XMLName   xml.Name           `xml:"nicovideo_thumb_response"`
+	Status    string             `xml:"status,attr"`
+	ErrorInfo NicoVideoErrorInfo `xml:"error"`
+	VideoInfo NicoVideoInfo      `xml:"thumb"`
+}
+
+func GetVideoInfo(videoId string) NicoVideoThumbResponse {
+	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -25,5 +74,11 @@ func GetVideoInfo(movieId string) string {
 		os.Exit(1)
 	}
 
-	return string(body)
+	var result NicoVideoThumbResponse
+	err = xml.Unmarshal(body, &result)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return result
 }

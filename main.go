@@ -9,15 +9,15 @@ import (
 )
 
 const (
-	urlHelp = "The movie url or id from which you want to extract movie infomation."
+	urlHelp = "The video url or id from which you want to extract video infomation."
 )
 
 func main() {
-	movieUrl := flag.String("url", "foo", urlHelp)
+	videoUrl := flag.String("url", "foo", urlHelp)
 	flag.Parse()
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	movieInfo := gonico.GetVideoInfo(*movieUrl)
-	fmt.Println(movieInfo)
+	videoInfo := gonico.GetVideoInfo(*videoUrl)
+	fmt.Println(videoInfo)
 }
