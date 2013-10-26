@@ -70,28 +70,40 @@ func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err e
 
 func GetAllKindsOfVideoTags(videoId string) (allTags []string, lockedTags []string, unlockedTags []string) {
 	resp, err := GetVideoThumbResponse(videoId)
+
 	if err != nil {
 		return
 	}
-	switch resp.Status {
-	case "ok":
-		videoInfo := resp.VideoInfo
-		for _, tag := range videoInfo.Tags[0].Tag {
-			allTags = append(allTags, tag.Value)
-			switch tag.Lock {
-			case "1":
-				lockedTags = append(lockedTags, tag.Value)
-			default:
-				unlockedTags = append(unlockedTags, tag.Value)
-			}
-		}
-		return
-	default:
+
+	if resp.Status != "ok" {
 		return
 	}
+
+	videoInfo := resp.VideoInfo
+	for _, tag := range videoInfo.Tags[0].Tag {
+		allTags = append(allTags, tag.Value)
+
+		switch tag.Lock {
+		case "1":
+			lockedTags = append(lockedTags, tag.Value)
+		default:
+			unlockedTags = append(unlockedTags, tag.Value)
+		}
+	}
+	return
 }
 
 func GetVideoTags(videoId string) (tags []string) {
 	tags, _, _ = GetAllKindsOfVideoTags(videoId)
+	return
+}
+
+func GetLockedVideoTags(videoId string) (lockedTags []string) {
+	_, lockedTags, _ = GetAllKindsOfVideoTags(videoId)
+	return
+}
+
+func GetUnlockedVideoTags(videoId string) (unlockedTags []string) {
+	_, _, unlockedTags = GetAllKindsOfVideoTags(videoId)
 	return
 }
