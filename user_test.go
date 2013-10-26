@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -14,5 +13,4 @@ func TestLogin(t *testing.T) {
 	} else {
 		assert.NotEqual(t, authFlag, 0)
 	}
-	fmt.Println(resp.Header)
 }
