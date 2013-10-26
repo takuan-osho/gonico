@@ -3,9 +3,7 @@ package gonico
 import (
 	"encoding/xml"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 )
 
 var NicoAPIUrls = map[string]string{
@@ -62,25 +60,9 @@ type NicoVideoThumbResponse struct {
 	VideoInfo NicoVideoInfo      `xml:"thumb"`
 }
 
-func GetVideoThumbResponse(videoId string) (NicoVideoThumbResponse, string) {
-	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-
-	var result NicoVideoThumbResponse
+func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err error) {
+	resp, _ := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
+	body, _ := ioutil.ReadAll(resp.Body)
 	err = xml.Unmarshal(body, &result)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-
-	return result, result.Status
+	return
 }
