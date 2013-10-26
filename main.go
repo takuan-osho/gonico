@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"runtime"
-
-	"gonico"
 )
 
 const (
@@ -19,7 +17,7 @@ func main() {
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	resp, err := gonico.GetVideoThumbResponse(*videoUrl)
+	resp, err := GetVideoThumbResponse(*videoUrl)
 	if err != nil {
 		log.Fatal(err)
 	}

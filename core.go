@@ -1,4 +1,4 @@
-package gonico
+package main
 
 import (
 	"encoding/xml"
