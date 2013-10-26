@@ -1,11 +1,10 @@
 package gonico
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestLogin(t *testing.T) {
-	if Login() != true {
-		t.Errorf("error!")
-	}
+	assert.Equal(t, Login(), true)
 }

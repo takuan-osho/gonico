@@ -1,6 +1,7 @@
 package gonico
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -13,9 +14,7 @@ func TestGetVideoThumbResponse(t *testing.T) {
 	switch status {
 	case "ok":
 		videoInfo := result.VideoInfo
-		if result.VideoInfo.VideoId != videoId {
-			t.Errorf("Expected %v, got %v.", videoId, videoInfo.VideoId)
-		}
+		assert.Equal(t, videoInfo.VideoId, videoId)
 	default:
 		t.Fail()
 	}
