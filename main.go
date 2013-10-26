@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"runtime"
 
 	"gonico"
@@ -18,12 +19,9 @@ func main() {
 
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	resp, status := gonico.GetVideoThumbResponse(*videoUrl)
-
-	switch status {
-	case "ok":
-		fmt.Println(resp.VideoInfo)
-	default:
-		fmt.Println(resp.ErrorInfo)
+	resp, err := gonico.GetVideoThumbResponse(*videoUrl)
+	if err != nil {
+		log.Fatal(err)
 	}
+	fmt.Println(resp)
 }
