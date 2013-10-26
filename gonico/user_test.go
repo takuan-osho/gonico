@@ -6,5 +6,11 @@ import (
 )
 
 func TestLogin(t *testing.T) {
-	assert.Equal(t, Login(), true)
+	resp, err := Login()
+	authFlag := resp.Header["X-Niconico-Authflag"][0]
+	if err != nil {
+		assert.Equal(t, authFlag, 0)
+	} else {
+		assert.NotEqual(t, authFlag, 0)
+	}
 }

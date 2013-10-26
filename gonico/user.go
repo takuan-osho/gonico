@@ -1,11 +1,23 @@
 package gonico
 
-type NicoUser struct {
-	Mail            string
-	Password        string
-	IsAuthenticated bool
-}
+import (
+	"github.com/joho/godotenv"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+)
 
-func Login() bool {
-	return true
+func Login() (resp *http.Response, err error) {
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+	mail := os.Getenv("NICO_MAIL")
+	password := os.Getenv("NICO_PASSWORD")
+	v := url.Values{}
+	v.Add("mail", mail)
+	v.Add("password", password)
+	resp, err = http.PostForm(NicoAPIUrls["login"], v)
+	return
 }
