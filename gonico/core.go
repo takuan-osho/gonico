@@ -62,6 +62,7 @@ type NicoVideoThumbResponse struct {
 
 func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err error) {
 	resp, _ := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
+	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	err = xml.Unmarshal(body, &result)
 	return

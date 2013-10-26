@@ -15,9 +15,7 @@ func Login() (resp *http.Response, err error) {
 	}
 	mail := os.Getenv("NICO_MAIL")
 	password := os.Getenv("NICO_PASSWORD")
-	v := url.Values{}
-	v.Add("mail", mail)
-	v.Add("password", password)
+	v := url.Values{"mail": {mail}, "password": {password}}
 	resp, err = http.PostForm(NicoAPIUrls["login"], v)
 	return
 }
