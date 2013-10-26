@@ -2,8 +2,8 @@ package gonico
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 )
@@ -64,20 +64,20 @@ type NicoVideoThumbResponse struct {
 func GetVideoThumbResponse(videoId string) (NicoVideoThumbResponse, string) {
 	resp, err := http.Get(NicoAPIUrls["getthumbinfo"] + videoId)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 
 	var result NicoVideoThumbResponse
 	err = xml.Unmarshal(body, &result)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 
