@@ -68,7 +68,7 @@ func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err e
 	return
 }
 
-func GetVideoTags(videoId string) (returnTags []string) {
+func GetVideoTags(videoId string) (tags []string) {
 	resp, err := GetVideoThumbResponse(videoId)
 	if err != nil {
 		return
@@ -76,9 +76,8 @@ func GetVideoTags(videoId string) (returnTags []string) {
 	switch resp.Status {
 	case "ok":
 		videoInfo := resp.VideoInfo
-		tags := videoInfo.Tags[0].Tag
-		for _, tag := range tags {
-			returnTags = append(returnTags, tag.Value)
+		for _, tag := range videoInfo.Tags[0].Tag {
+			tags = append(tags, tag.Value)
 		}
 		return
 	default:
