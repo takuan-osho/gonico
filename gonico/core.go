@@ -9,6 +9,7 @@ import (
 )
 
 var NicoAPIUrls = map[string]string{
+	"login":        "https://secure.nicovideo.jp/secure/login?site=niconico",
 	"getthumbinfo": "http://ext.nicovideo.jp/api/getthumbinfo/",
 	"getflv":       "http://flapi.nicovideo.jp/api/getflv/",
 }
