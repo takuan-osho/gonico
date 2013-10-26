@@ -68,6 +68,21 @@ func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err e
 	return
 }
 
+func GetVideoTitle(videoId string) (title string) {
+	resp, err := GetVideoThumbResponse(videoId)
+
+	if err != nil {
+		return
+	}
+
+	if resp.Status != "ok" {
+		return
+	}
+
+	title = resp.VideoInfo.Title
+	return
+}
+
 func GetAllKindsOfVideoTags(videoId string) (allTags []string, lockedTags []string, unlockedTags []string) {
 	resp, err := GetVideoThumbResponse(videoId)
 

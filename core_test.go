@@ -6,21 +6,29 @@ import (
 )
 
 func TestGetVideoThumbResponse(t *testing.T) {
-	result, err := GetVideoThumbResponse("sm1")
+	resp, err := GetVideoThumbResponse("sm1")
 	if err != nil {
 		t.Fail()
 	}
-	errorInfo := result.ErrorInfo
+	errorInfo := resp.ErrorInfo
 	assert.Equal(t, errorInfo.Code, "DELETED")
 	assert.Equal(t, errorInfo.Description, "deleted")
 
-	result, err = GetVideoThumbResponse("sm9")
+	resp, err = GetVideoThumbResponse("sm9")
 	if err != nil {
 		t.Fail()
 	}
-	videoInfo := result.VideoInfo
+	videoInfo := resp.VideoInfo
 	assert.Equal(t, videoInfo.VideoId, "sm9")
 	assert.Equal(t, videoInfo.MovieType, "flv")
+}
+
+func TestGetVideoTitle(t *testing.T) {
+	title := GetVideoTitle("sm1")
+	assert.Empty(t, title)
+
+	title = GetVideoTitle("sm9")
+	assert.Contains(t, title, "陰陽師")
 }
 
 func TestGetAllKindsOfVideoTags(t *testing.T) {
