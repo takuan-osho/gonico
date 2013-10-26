@@ -22,3 +22,11 @@ func TestGetVideoThumbResponse(t *testing.T) {
 	assert.Equal(t, videoInfo.VideoId, "sm9")
 	assert.Equal(t, videoInfo.MovieType, "flv")
 }
+
+func TestGetVideoTags(t *testing.T) {
+	tags := GetVideoTags("sm1")
+	assert.Nil(t, tags)
+
+	tags = GetVideoTags("sm9")
+	assert.Equal(t, tags[0], "陰陽師")
+}

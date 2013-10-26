@@ -67,3 +67,21 @@ func GetVideoThumbResponse(videoId string) (result NicoVideoThumbResponse, err e
 	err = xml.Unmarshal(body, &result)
 	return
 }
+
+func GetVideoTags(videoId string) (returnTags []string) {
+	resp, err := GetVideoThumbResponse(videoId)
+	if err != nil {
+		return
+	}
+	switch resp.Status {
+	case "ok":
+		videoInfo := resp.VideoInfo
+		tags := videoInfo.Tags[0].Tag
+		for _, tag := range tags {
+			returnTags = append(returnTags, tag.Value)
+		}
+		return
+	default:
+		return
+	}
+}
