@@ -3,20 +3,7 @@ package main
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
-
-func TestGetAllKindsOfVideoTags(t *testing.T) {
-	allTags, lockedTags, unlockedTags := GetAllKindsOfVideoTags("sm1")
-	assert.Nil(t, allTags)
-	assert.Nil(t, lockedTags)
-	assert.Nil(t, unlockedTags)
-
-	allTags, lockedTags, unlockedTags = GetAllKindsOfVideoTags("sm9")
-	assert.Equal(t, allTags[0], "陰陽師")
-	assert.Equal(t, lockedTags[0], "陰陽師")
-}
 
 var _ = Describe("gonico core test", func() {
 
@@ -72,8 +59,35 @@ var _ = Describe("gonico core test", func() {
 				title = GetVideoTitle("sm9")
 			})
 
-			It("shoud return correct value", func() {
+			It("should return correct value", func() {
 				Expect(title).To(ContainSubstring("陰陽師"))
+			})
+		})
+	})
+
+	Describe("test GetAllKindsOfVideoTags function", func() {
+		var allTags, lockedTags, unlockedTags []string
+
+		Context("when the video is deleted", func() {
+			BeforeEach(func() {
+				allTags, lockedTags, unlockedTags = GetAllKindsOfVideoTags("sm1")
+			})
+
+			It("should return empty value", func() {
+				Expect(allTags).To(BeEmpty())
+				Expect(lockedTags).To(BeEmpty())
+				Expect(unlockedTags).To(BeEmpty())
+			})
+		})
+
+		Context("when the video is alive", func() {
+			BeforeEach(func() {
+				allTags, lockedTags, unlockedTags = GetAllKindsOfVideoTags("sm9")
+			})
+
+			It("should return correct kinds of video tags", func() {
+				Expect(allTags[0]).To(Equal("陰陽師"))
+				Expect(lockedTags[0]).To(Equal("陰陽師"))
 			})
 		})
 	})
