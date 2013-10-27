@@ -1,6 +1,8 @@
 package main
 
 import (
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -41,3 +43,19 @@ func TestGetAllKindsOfVideoTags(t *testing.T) {
 	assert.Equal(t, allTags[0], "陰陽師")
 	assert.Equal(t, lockedTags[0], "陰陽師")
 }
+
+var _ = Describe("gonico core", func() {
+	var (
+		resp NicoVideoThumbResponse
+		err  error
+	)
+
+	BeforeEach(func() {
+		resp, err = GetVideoThumbResponse("sm1")
+	})
+
+	It("error loading", func() {
+		errorInfo := resp.ErrorInfo
+		Expect(errorInfo.Code).To(Equal("DELETED"))
+	})
+})
