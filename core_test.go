@@ -7,14 +7,6 @@ import (
 	"testing"
 )
 
-func TestGetVideoTitle(t *testing.T) {
-	title := GetVideoTitle("sm1")
-	assert.Empty(t, title)
-
-	title = GetVideoTitle("sm9")
-	assert.Contains(t, title, "陰陽師")
-}
-
 func TestGetAllKindsOfVideoTags(t *testing.T) {
 	allTags, lockedTags, unlockedTags := GetAllKindsOfVideoTags("sm1")
 	assert.Nil(t, allTags)
@@ -28,12 +20,11 @@ func TestGetAllKindsOfVideoTags(t *testing.T) {
 
 var _ = Describe("gonico core test", func() {
 
-	var (
-		resp NicoVideoThumbResponse
-		err  error
-	)
-
 	Describe("test GetVideoThumbResponse function", func() {
+		var (
+			resp NicoVideoThumbResponse
+			err  error
+		)
 
 		Context("when the video is deleted", func() {
 			BeforeEach(func() {
@@ -59,6 +50,30 @@ var _ = Describe("gonico core test", func() {
 				videoInfo := resp.VideoInfo
 				Expect(videoInfo.VideoId).To(Equal("sm9"))
 				Expect(videoInfo.MovieType).To(Equal("flv"))
+			})
+		})
+	})
+
+	Describe("test GetVideoTitle function", func() {
+		var title string
+
+		Context("when the video is deleted", func() {
+			BeforeEach(func() {
+				title = GetVideoTitle("sm1")
+			})
+
+			It("should return empty value", func() {
+				Expect(title).To(BeEmpty())
+			})
+		})
+
+		Context("when the video is alive", func() {
+			BeforeEach(func() {
+				title = GetVideoTitle("sm9")
+			})
+
+			It("shoud return correct value", func() {
+				Expect(title).To(ContainSubstring("陰陽師"))
 			})
 		})
 	})
