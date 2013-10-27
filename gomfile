@@ -1,0 +1,3 @@
+gom "github.com/joho/godotenv"
+gom "github.com/onsi/ginkgo"
+gom "github.com/onsi/gomega"
