@@ -6,6 +6,8 @@ go:
 install:
   - go get -v github.com/onsi/ginkgo
   - go get -v github.com/onsi/gomega
+  - go get -v github.com/joho/godotenv
+  - go get -v github.com/stretchr/testify/assert
   - go install -v github.com/onsi/ginkgo/ginkgo
 
 script: PATH=$HOME/gopath/bin:$PATH ginkgo
