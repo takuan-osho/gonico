@@ -7,24 +7,6 @@ import (
 	"testing"
 )
 
-func TestGetVideoThumbResponse(t *testing.T) {
-	resp, err := GetVideoThumbResponse("sm1")
-	if err != nil {
-		t.Fail()
-	}
-	errorInfo := resp.ErrorInfo
-	assert.Equal(t, errorInfo.Code, "DELETED")
-	assert.Equal(t, errorInfo.Description, "deleted")
-
-	resp, err = GetVideoThumbResponse("sm9")
-	if err != nil {
-		t.Fail()
-	}
-	videoInfo := resp.VideoInfo
-	assert.Equal(t, videoInfo.VideoId, "sm9")
-	assert.Equal(t, videoInfo.MovieType, "flv")
-}
-
 func TestGetVideoTitle(t *testing.T) {
 	title := GetVideoTitle("sm1")
 	assert.Empty(t, title)
@@ -44,18 +26,40 @@ func TestGetAllKindsOfVideoTags(t *testing.T) {
 	assert.Equal(t, lockedTags[0], "陰陽師")
 }
 
-var _ = Describe("gonico core", func() {
+var _ = Describe("gonico core test", func() {
+
 	var (
 		resp NicoVideoThumbResponse
 		err  error
 	)
 
-	BeforeEach(func() {
-		resp, err = GetVideoThumbResponse("sm1")
-	})
+	Describe("test GetVideoThumbResponse function", func() {
 
-	It("error loading", func() {
-		errorInfo := resp.ErrorInfo
-		Expect(errorInfo.Code).To(Equal("DELETED"))
+		Context("when the video is deleted", func() {
+			BeforeEach(func() {
+				resp, err = GetVideoThumbResponse("sm1")
+				if err != nil {
+					Fail("Network connection error!!!")
+				}
+			})
+
+			It("should return ErrorInfo which tells the video is deleted", func() {
+				errorInfo := resp.ErrorInfo
+				Expect(errorInfo.Code).To(Equal("DELETED"))
+				Expect(errorInfo.Description).To(Equal("deleted"))
+			})
+		})
+
+		Context("when the video is alive", func() {
+			BeforeEach(func() {
+				resp, err = GetVideoThumbResponse("sm9")
+			})
+
+			It("should return VideoInfo", func() {
+				videoInfo := resp.VideoInfo
+				Expect(videoInfo.VideoId).To(Equal("sm9"))
+				Expect(videoInfo.MovieType).To(Equal("flv"))
+			})
+		})
 	})
 })
